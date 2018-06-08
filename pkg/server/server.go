@@ -8,10 +8,9 @@ import (
 
 	"github.com/a8uhnf/map-test/api"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/pkg/errors"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
-	"github.com/pkg/errors"
-	// "google.golang.org/grpc/credentials"
 )
 
 // private type for Context keys

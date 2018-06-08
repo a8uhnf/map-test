@@ -2,10 +2,10 @@
 
 
 [[projects]]
-  branch = "master"
-  name = "github.com/a8uhnf/hello-world"
-  packages = ["grpc/api"]
-  revision = "4146a5b6835f6a1ef115213984bbb51db8008e8a"
+  name = "github.com/ghodss/yaml"
+  packages = ["."]
+  revision = "0ca9ea5df5451ffdf184b4428c902747c2c11cd7"
+  version = "v1.0.0"
 
 [[projects]]
   name = "github.com/golang/protobuf"
@@ -113,9 +113,15 @@
   revision = "7a6a684ca69eb4cae85ad0a484f2e531598c047b"
   version = "v1.12.2"
 
+[[projects]]
+  name = "gopkg.in/yaml.v2"
+  packages = ["."]
+  revision = "5420a8b6744d3b0345ab293f6fcba19c978f1183"
+  version = "v2.2.1"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "314a8c42aea6e1dc8693c6c9f567fa0afcd80375e9eb8b58d4353bc5f1ba78af"
+  inputs-digest = "4098c96cd3a716ec4259bb6d47ec817e4eb46cdc061ff3341eb07a4831aca304"
   solver-name = "gps-cdcl"
   solver-version = 1

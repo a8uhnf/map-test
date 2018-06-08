@@ -2,14 +2,48 @@ syntax = "proto3";
 package api;
 
 import "google/api/annotations.proto";
-message PingMessage {
-  string greeting = 1;
-  int32 countMe = 2;
+message SearchPlacesRequest {
+    string query = 1;
+    LatLng location = 2;
+    uint32 radius = 3;
+    string language = 4;
+    int minPrice = 5;
+    int maxPrice = 6;
+    bool openNow = 7;
+    string placeType = 8;
+    string pageToken = 9;
 }
+
+message LatLng {
+    float lat = 1;
+    float lng = 2;
+}
+
+message SearchPlacesResponse {
+    repeated PlacesSearchResult results = 1;
+    message PlacesSearchResult {
+        string formattedAddress = 1;
+        AddressGeometry geometry = 2;
+
+        message AddressGeometry {
+            LatLng location = 1;
+            string locationType = 2;
+            LatLngBounds bounds = 3;
+            LatLngBounds viewport = 4;
+            repeated string types = 5;
+        }
+        message LatLngBounds {
+            LatLng northeast = 1;
+            LatLng southwest =2;
+        }
+    }
+}
+
+
 service Ping {
-  rpc SayHello(PingMessage) returns (PingMessage) {
+  rpc SayHello(SearchPlacesRequest) returns (SearchPlacesResponse) {
     option(google.api.http) = {
-      get: "/hello"
+      get: "/api/{vendor}"
     };
   }
 }
