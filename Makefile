@@ -5,7 +5,7 @@ API_REST_OUT := "api/api.pb.gw.go"
 PKG := "github.com/a8uhnf/map-test"
 SERVER_PKG_BUILD := "${PKG}/server"
 CLIENT_PKG_BUILD := "${PKG}/client"
-PKG_LIST := $(shell go list ${PKG}/... | grep -v /vendor/)
+# PKG_LIST := $(shell go list ${PKG}/... | grep -v /vendor/)
 
 .PHONY: all api server client
 

@@ -14,7 +14,7 @@ type Server struct{}
 var count int32
 
 // SayHello generates response to a Ping request
-func (s *Server) SayHello(ctx context.Context, in *PingMessage) (*PingMessage, error) {
+func (s *Server) SayHello(ctx context.Context, in *SearchPlacesRequest) (*SearchPlacesResponse, error) {
 	env := os.Getenv("HELLO_WORLD")
 
 	fmt.Println("--------------- ENV: ", env)

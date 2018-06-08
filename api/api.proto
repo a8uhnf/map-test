@@ -2,16 +2,19 @@ syntax = "proto3";
 package api;
 
 import "google/api/annotations.proto";
+
+
 message SearchPlacesRequest {
     string query = 1;
     LatLng location = 2;
     uint32 radius = 3;
     string language = 4;
-    int minPrice = 5;
-    int maxPrice = 6;
+    int32 minPrice = 5;
+    int32 maxPrice = 6;
     bool openNow = 7;
     string placeType = 8;
     string pageToken = 9;
+    string vendor = 10;
 }
 
 message LatLng {
@@ -21,9 +24,19 @@ message LatLng {
 
 message SearchPlacesResponse {
     repeated PlacesSearchResult results = 1;
+    repeated string htmlAttributes = 2;
+    string nextPageToken = 3;
+
     message PlacesSearchResult {
         string formattedAddress = 1;
         AddressGeometry geometry = 2;
+        string name = 3;
+        string icon = 4;
+        string placeID = 5;
+        string scope = 6;
+        float rating = 7;
+        repeated string types = 8;
+
 
         message AddressGeometry {
             LatLng location = 1;
@@ -31,16 +44,52 @@ message SearchPlacesResponse {
             LatLngBounds bounds = 3;
             LatLngBounds viewport = 4;
             repeated string types = 5;
+            OpeningHours openingHours = 6;
+            repeated Photo photos = 7;
+            repeated AltID altIDs = 8;
+            int32 priceLevel = 9;
+            string vicinity = 10;
+            bool permanentlyClose = 11;
         }
+
         message LatLngBounds {
             LatLng northeast = 1;
             LatLng southwest =2;
+        }
+
+        message OpeningHours {
+            bool openNow = 1;
+            repeated  OpeningHoursPeriod periods = 2;
+            repeated string weekDayText = 3;
+            bool permanentlyClose = 4;
+        }
+
+        message OpeningHoursPeriod {
+            OpeningHoursOpenClose open = 1;
+            OpeningHoursOpenClose close = 2;
+        }
+
+        message OpeningHoursOpenClose {
+            int32 day = 1;
+            string time = 2;
+        }
+
+        message Photo {
+            string photoReference = 1;
+            int32 height = 2;
+            int32 width = 3;
+            repeated string htmlAttributes = 4;
+        }
+
+        message AltID {
+            string placeID = 1;
+            string scope = 2;
         }
     }
 }
 
 
-service Ping {
+service SearchPlaces {
   rpc SayHello(SearchPlacesRequest) returns (SearchPlacesResponse) {
     option(google.api.http) = {
       get: "/api/{vendor}"
