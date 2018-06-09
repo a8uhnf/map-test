@@ -15,6 +15,7 @@ var count int32
 
 // SayHello generates response to a Ping request
 func (s *Server) SayHello(ctx context.Context, in *SearchPlacesRequest) (*SearchPlacesResponse, error) {
+	ret := &SearchPlacesResponse{}
 	env := os.Getenv("HELLO_WORLD")
 
 	fmt.Println("--------------- ENV: ", env)
@@ -22,6 +23,6 @@ func (s *Server) SayHello(ctx context.Context, in *SearchPlacesRequest) (*Search
 	fmt.Println("--------------- COUNT: ", count)
 	count++
 
-	log.Printf("Receive message %s", in.Greeting)
-	return &PingMessage{Greeting: env}, nil
+	log.Printf("Receive message %s", in.Descriptor)
+	return ret, nil
 }

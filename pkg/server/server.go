@@ -42,7 +42,7 @@ func startGRPCServer(address string) error {
 	}
 	grpcServer := grpc.NewServer()
 	// attach the Ping service to the server
-	api.RegisterPingServer(grpcServer, &s)
+	api.RegisterSearchPlacesServer(grpcServer, &s)
 	// start the server
 	log.Printf("starting HTTP/2 gRPC server on %s", address)
 	if err := grpcServer.Serve(lis); err != nil {
@@ -62,7 +62,7 @@ func startRESTServer(address, grpcAddress string) error {
 	// Setup the client gRPC options
 	opts := []grpc.DialOption{grpc.WithInsecure()}
 	// Register ping
-	err := api.RegisterPingHandlerFromEndpoint(ctx, mux, grpcAddress, opts)
+	err := api.RegisterSearchPlacesHandlerFromEndpoint(ctx, mux, grpcAddress, opts)
 	if err != nil {
 		return fmt.Errorf("could not register service Ping: %s", err)
 	}
@@ -76,10 +76,13 @@ func StartServer() error {
 	grpcAddress := fmt.Sprintf("%s:%d", "localhost", 7777)
 	restAddress := fmt.Sprintf("%s:%d", "localhost", 7778)
 	// fire the gRPC server in a goroutine
-	go func() {
+	ctx := context.Background()
+
+	go func(c context.Context) {
 		err := startGRPCServer(grpcAddress)
 		if err != nil {
 			// log.Fatalf()
+			c.Err
 			return errors.Wrap("failed to start gRPC server: %s", err)
 		}
 	}()
