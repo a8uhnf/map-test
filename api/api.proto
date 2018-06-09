@@ -9,8 +9,8 @@ message SearchPlacesRequest {
     LatLng location = 2;
     uint32 radius = 3;
     string language = 4;
-    int32 minPrice = 5;
-    int32 maxPrice = 6;
+    string minPrice = 5;
+    string maxPrice = 6;
     bool openNow = 7;
     string placeType = 8;
     string pageToken = 9;
@@ -18,8 +18,8 @@ message SearchPlacesRequest {
 }
 
 message LatLng {
-    float lat = 1;
-    float lng = 2;
+    double lat = 1;
+    double lng = 2;
 }
 
 message SearchPlacesResponse {

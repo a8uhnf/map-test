@@ -8,7 +8,7 @@ import (
 
 func init() {
 	fmt.Println("Hello from init func of searchPlaces pkg")
-	MapToVendor["goole"] = google.SearchPlaces{}
+	MapToVendor["google"] = &google.SearchPlaces{}
 }
 
 func GoogleSearchPlaces() {

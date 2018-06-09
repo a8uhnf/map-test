@@ -42,9 +42,9 @@ func searchPlaces(in *api.SearchPlacesRequest) *api.SearchPlacesResponse {
 
 	cfg, err := config.GetConfig()
 	check(err)
-
+	log.Println("config api key")
+	log.Println(cfg.APIKey)
 	var client *maps.Client
-	// var err error
 	if cfg.APIKey != "" {
 		client, err = maps.NewClient(maps.WithAPIKey(cfg.APIKey))
 	} else if cfg.ClientID != "" || cfg.ClientSignature != "" {
@@ -55,20 +55,33 @@ func searchPlaces(in *api.SearchPlacesRequest) *api.SearchPlacesResponse {
 	check(err)
 
 	r := &maps.TextSearchRequest{
-		Query:    *in.Query,
-		Language: *language,
-		Radius:   *radius,
-		OpenNow:  *opennow,
+		Query:    in.Query,
+		Language: in.Language,
+		Radius:   uint(in.Radius),
+		OpenNow:  in.OpenNow,
+		MaxPrice: maps.PriceLevel(in.MinPrice),
+		MinPrice: maps.PriceLevel(in.MinPrice),
+		Type:     maps.PlaceType(in.PlaceType),
 	}
 
-	parseLocation(*location, r)
-	parsePriceLevels(*minprice, *maxprice, r)
-	parsePlaceType(*placeType, r)
+	if in.Location != nil {
+		r.Location = &maps.LatLng{
+			Lat: in.Location.Lat,
+			Lng: in.Location.Lng,
+		}
+		// Location: ,
+	}
+
+	// parseLocation(*location, r)
+	// parsePriceLevels(*minprice, *maxprice, r)
+	// parsePlaceType(*placeType, r)
 
 	resp, err := client.TextSearch(context.Background(), r)
 	check(err)
 
 	pretty.Println(resp)
+
+	return &api.SearchPlacesResponse{}
 }
 
 func parseLocation(location string, r *maps.TextSearchRequest) {

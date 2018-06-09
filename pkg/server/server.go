@@ -20,10 +20,6 @@ const (
 	clientIDKey contextKey = iota
 )
 
-func init() {
-	MapToVendor = make(map[string]interface{})
-}
-
 func credMatcher(headerName string) (mdName string, ok bool) {
 	if headerName == "Login" || headerName == "Password" {
 		return headerName, true
