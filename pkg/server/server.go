@@ -7,8 +7,8 @@ import (
 	"net/http"
 
 	"github.com/a8uhnf/map-test/api"
+	// _ "github.com/a8uhnf/map-test/pkg/google"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-	"github.com/pkg/errors"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 )
@@ -19,6 +19,10 @@ type contextKey int
 const (
 	clientIDKey contextKey = iota
 )
+
+func init() {
+	MapToVendor = make(map[string]interface{})
+}
 
 func credMatcher(headerName string) (mdName string, ok bool) {
 	if headerName == "Login" || headerName == "Password" {
@@ -34,12 +38,7 @@ func startGRPCServer(address string) error {
 		return fmt.Errorf("failed to listen: %v", err)
 	}
 	// create a server instance
-	s := api.Server{}
-	// Create the TLS credentials
-	// creds, err := credentials.NewServerTLSFromFile(certFile, keyFile)
-	if err != nil {
-		return fmt.Errorf("could not load TLS keys: %s", err)
-	}
+	s := Server{}
 	grpcServer := grpc.NewServer()
 	// attach the Ping service to the server
 	api.RegisterSearchPlacesServer(grpcServer, &s)
@@ -50,18 +49,14 @@ func startGRPCServer(address string) error {
 	}
 	return nil
 }
+
 func startRESTServer(address, grpcAddress string) error {
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 	mux := runtime.NewServeMux(runtime.WithIncomingHeaderMatcher(credMatcher))
-	// creds, err := credentials.NewClientTLSFromFile(certFile, "")
-	//if err != nil {
-	//	return fmt.Errorf("could not load TLS certificate: %s", err)
-	//  }
-	// Setup the client gRPC options
 	opts := []grpc.DialOption{grpc.WithInsecure()}
-	// Register ping
+	// Register searchresults
 	err := api.RegisterSearchPlacesHandlerFromEndpoint(ctx, mux, grpcAddress, opts)
 	if err != nil {
 		return fmt.Errorf("could not register service Ping: %s", err)
@@ -72,25 +67,24 @@ func startRESTServer(address, grpcAddress string) error {
 }
 
 // StartServer start a gRPC server and waits for connection
-func StartServer() error {
+func StartServer() {
 	grpcAddress := fmt.Sprintf("%s:%d", "localhost", 7777)
 	restAddress := fmt.Sprintf("%s:%d", "localhost", 7778)
 	// fire the gRPC server in a goroutine
-	ctx := context.Background()
+	// ctx := context.Background()
 
-	go func(c context.Context) {
+	go func() {
 		err := startGRPCServer(grpcAddress)
 		if err != nil {
 			// log.Fatalf()
-			c.Err
-			return errors.Wrap("failed to start gRPC server: %s", err)
+			log.Fatalln("failed to start gRPC server: ", err)
 		}
 	}()
 	// fire the REST server in a goroutine
 	go func() {
 		err := startRESTServer(restAddress, grpcAddress)
 		if err != nil {
-			return errors.Wrap("failed to start REST server: %s", err)
+			log.Fatalln("failed to start REST server: ", err)
 		}
 	}()
 	// infinite loop
