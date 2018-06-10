@@ -71,10 +71,6 @@ func searchPlaces(in *api.SearchPlacesRequest) *api.SearchPlacesResponse {
 		}
 	}
 
-	// parseLocation(*location, r)
-	// parsePriceLevels(*minprice, *maxprice, r)
-	// parsePlaceType(*placeType, r)
-
 	resp, err := client.TextSearch(context.Background(), r)
 	if err != nil {
 		log.Println(err)
@@ -82,10 +78,35 @@ func searchPlaces(in *api.SearchPlacesRequest) *api.SearchPlacesResponse {
 
 	pretty.Println(resp)
 
-	return &api.SearchPlacesResponse{}
+	ret, err := parseResponse(resp)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	return ret
 }
 
-func parse
+func parseResponse(in maps.PlacesSearchResponse) (*api.SearchPlacesResponse, error) {
+	resp := &api.SearchPlacesResponse{}
+
+	res := []*api.SearchPlacesResponse_PlacesSearchResult{}
+
+	for _, v := range in.Results {
+		tmp := &api.SearchPlacesResponse_PlacesSearchResult{
+			Name:             v.Name,
+			PlaceID:          v.PlaceID,
+			Icon:             v.Icon,
+			Rating:           v.Rating,
+			Scope:            v.Scope,
+			Types:            v.Types,
+			FormattedAddress: v.FormattedAddress,
+		}
+		res = append(res, tmp)
+	}
+	resp.Results = res
+
+	return resp, nil
+}
 
 func parseLocation(location string, r *maps.TextSearchRequest) {
 	if location != "" {
