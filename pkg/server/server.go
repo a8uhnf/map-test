@@ -7,7 +7,6 @@ import (
 	"net/http"
 
 	"github.com/a8uhnf/map-test/api"
-	// _ "github.com/a8uhnf/map-test/pkg/google"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
@@ -67,12 +66,9 @@ func StartServer() {
 	grpcAddress := fmt.Sprintf("%s:%d", "localhost", 7777)
 	restAddress := fmt.Sprintf("%s:%d", "localhost", 7778)
 	// fire the gRPC server in a goroutine
-	// ctx := context.Background()
-
 	go func() {
 		err := startGRPCServer(grpcAddress)
 		if err != nil {
-			// log.Fatalf()
 			log.Fatalln("failed to start gRPC server: ", err)
 		}
 	}()

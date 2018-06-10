@@ -20,7 +20,6 @@ func init() {
 type SearchPlaces struct{}
 
 func (s SearchPlaces) Search(in *api.SearchPlacesRequest) (*api.SearchPlacesResponse, error) {
-	// ret := &api.SearchPlacesResponse{}
 	ret := searchPlaces(in)
 	return ret, nil
 }
@@ -42,8 +41,6 @@ func searchPlaces(in *api.SearchPlacesRequest) *api.SearchPlacesResponse {
 
 	cfg, err := config.GetConfig()
 	check(err)
-	log.Println("config api key")
-	log.Println(cfg.APIKey)
 	var client *maps.Client
 	if cfg.APIKey != "" {
 		client, err = maps.NewClient(maps.WithAPIKey(cfg.APIKey))
@@ -76,12 +73,11 @@ func searchPlaces(in *api.SearchPlacesRequest) *api.SearchPlacesResponse {
 		log.Println(err)
 	}
 
-	pretty.Println(resp)
-
 	ret, err := parseResponse(resp)
 	if err != nil {
 		log.Fatalln(err)
 	}
+	pretty.Println(ret)
 
 	return ret
 }
