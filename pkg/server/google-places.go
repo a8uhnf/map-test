@@ -10,7 +10,3 @@ func init() {
 	fmt.Println("Hello from init func of searchPlaces pkg")
 	MapToVendor["google"] = &google.SearchPlaces{}
 }
-
-func GoogleSearchPlaces() {
-	fmt.Println("Hello Google SearchPlaces")
-}

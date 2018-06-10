@@ -69,7 +69,6 @@ func searchPlaces(in *api.SearchPlacesRequest) *api.SearchPlacesResponse {
 			Lat: in.Location.Lat,
 			Lng: in.Location.Lng,
 		}
-		// Location: ,
 	}
 
 	// parseLocation(*location, r)
@@ -77,7 +76,9 @@ func searchPlaces(in *api.SearchPlacesRequest) *api.SearchPlacesResponse {
 	// parsePlaceType(*placeType, r)
 
 	resp, err := client.TextSearch(context.Background(), r)
-	check(err)
+	if err != nil {
+		log.Println(err)
+	}
 
 	pretty.Println(resp)
 
