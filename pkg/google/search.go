@@ -85,6 +85,8 @@ func searchPlaces(in *api.SearchPlacesRequest) *api.SearchPlacesResponse {
 	return &api.SearchPlacesResponse{}
 }
 
+func parse
+
 func parseLocation(location string, r *maps.TextSearchRequest) {
 	if location != "" {
 		l, err := maps.ParseLatLng(location)
