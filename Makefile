@@ -5,7 +5,6 @@ API_REST_OUT := "api/api.pb.gw.go"
 PKG := "github.com/a8uhnf/map-test"
 SERVER_PKG_BUILD := "${PKG}/server"
 CLIENT_PKG_BUILD := "${PKG}/client"
-# PKG_LIST := $(shell go list ${PKG}/... | grep -v /vendor/)
 
 ## RUN "make api" command to build and generate client.
 .PHONY: all api server client
@@ -29,9 +28,6 @@ api/api.pb.gw.go: api/api.proto
 		api/api.proto
 
 api: api/api.pb.go api/api.pb.gw.go ## Auto-generate grpc go sources
-
-dep: ## Get the dependencies
-	@go get -v -d ./...
 
 server: api ## Build the binary file for server
 	@go build -i -v -o $(SERVER_OUT) $(SERVER_PKG_BUILD)

@@ -19,7 +19,7 @@ go run main.go
 ```
 
 Now, server is up and running in `http://localhost:7778`.
-If you hit, `http://localhost:7778/api/google?query=123+main+street` you can see the search results.
+If you hit, (http://localhost:7778/api/google?query=123+main+street) you can see the search results.
 
 ## Supported Query Parameters
 
