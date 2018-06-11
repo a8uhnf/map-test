@@ -3,6 +3,7 @@
 ## Architecture
 
  - I use `golang`, `grpc`, `google-maps api` in this project. Supported fields are list below in `Supported Query Parameters` section.
+ - Uses [dep](https://github.com/golang/dep/) for dependency management.
  - URL structure http://localhost:7778/<vendor>?parameters
 
 ## Config
