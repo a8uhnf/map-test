@@ -8,23 +8,20 @@ import (
 
 	"github.com/a8uhnf/map-test/api"
 	"github.com/a8uhnf/map-test/config"
-	"github.com/kr/pretty"
 	"golang.org/x/net/context"
 	"googlemaps.github.io/maps"
 )
 
 func init() {
 	fmt.Println("Hello google.com")
-
-	
 }
 
-type SearchPlaces struct{
+type SearchPlaces struct {
 	Config config.MapConfig
 }
 
 func (s SearchPlaces) Search(in *api.SearchPlacesRequest) (*api.SearchPlacesResponse, error) {
-	ret := searchPlaces(in)
+	ret := s.searchPlaces(in)
 	return ret, nil
 }
 func usageAndExit(msg string) {
@@ -40,11 +37,11 @@ func check(err error) {
 	}
 }
 
-func searchPlaces(in *api.SearchPlacesRequest) *api.SearchPlacesResponse {
+func (s SearchPlaces) searchPlaces(in *api.SearchPlacesRequest) *api.SearchPlacesResponse {
 	flag.Parse()
 
-	cfg, err := config.GetConfig()
-	check(err)
+	cfg := s.Config
+	var err error
 	var client *maps.Client
 	if cfg.APIKey != "" {
 		client, err = maps.NewClient(maps.WithAPIKey(cfg.APIKey))
@@ -81,7 +78,11 @@ func searchPlaces(in *api.SearchPlacesRequest) *api.SearchPlacesResponse {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	pretty.Println(ret)
+	log.Println("Returns Search Results")
+	log.Printf("Total hits: %d\n", len(ret.Results))
+	for i, v := range ret.Results {
+		log.Printf("Places #%d:\nName: %s\nAddress: %s", i+1, v.Name, v.FormattedAddress)
+	}
 
 	return ret
 }
@@ -100,6 +101,23 @@ func parseResponse(in maps.PlacesSearchResponse) (*api.SearchPlacesResponse, err
 			Scope:            v.Scope,
 			Types:            v.Types,
 			FormattedAddress: v.FormattedAddress,
+			Geometry: &api.SearchPlacesResponse_PlacesSearchResult_AddressGeometry{
+				Location: &api.LatLng{
+					Lat: v.Geometry.Location.Lat,
+					Lng: v.Geometry.Location.Lng,
+				},
+				LocationType: v.Geometry.LocationType,
+				Bounds: &api.SearchPlacesResponse_PlacesSearchResult_LatLngBounds{
+					Northeast: &api.LatLng{
+						Lat: v.Geometry.Bounds.NorthEast.Lat,
+						Lng: v.Geometry.Bounds.NorthEast.Lng,
+					},
+					Southwest: &api.LatLng{
+						Lat: v.Geometry.Bounds.NorthEast.Lat,
+						Lng: v.Geometry.Bounds.NorthEast.Lng,
+					},
+				},
+			},
 		}
 		res = append(res, tmp)
 	}
