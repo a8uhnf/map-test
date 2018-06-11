@@ -1,11 +1,11 @@
 # map-test
 
-### Architecture
+## Architecture
 
  - I use `golang`, `grpc`, `google-maps api` in this project. Supported fields are list below in `Supported Query Parameters` section.
- - URL is http://localhost:7778/<vendor>?parameters
+ - URL structure http://localhost:7778/<vendor>?parameters
 
-### Config
+## Config
 
 `api-key`, `client-id`, `client-signature` is situated in `${HOME}/.map-test/config` file. You need to provide `api-key` or (`client-id` and `client-signature`) in `config` file.
 
