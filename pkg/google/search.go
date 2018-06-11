@@ -117,6 +117,16 @@ func parseResponse(in maps.PlacesSearchResponse) (*api.SearchPlacesResponse, err
 						Lng: v.Geometry.Bounds.NorthEast.Lng,
 					},
 				},
+				Viewport: &api.SearchPlacesResponse_PlacesSearchResult_LatLngBounds{
+					Northeast: &api.LatLng{
+						Lat: v.Geometry.Bounds.NorthEast.Lat,
+						Lng: v.Geometry.Bounds.NorthEast.Lng,
+					},
+					Southwest: &api.LatLng{
+						Lat: v.Geometry.Bounds.NorthEast.Lat,
+						Lng: v.Geometry.Bounds.NorthEast.Lng,
+					},
+				},
 			},
 		}
 		res = append(res, tmp)

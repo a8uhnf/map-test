@@ -44,12 +44,6 @@ message SearchPlacesResponse {
             LatLngBounds bounds = 3;
             LatLngBounds viewport = 4;
             repeated string types = 5;
-            OpeningHours openingHours = 6;
-            repeated Photo photos = 7;
-            repeated AltID altIDs = 8;
-            int32 priceLevel = 9;
-            string vicinity = 10;
-            bool permanentlyClose = 11;
         }
 
         message LatLngBounds {

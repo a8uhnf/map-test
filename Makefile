@@ -7,6 +7,7 @@ SERVER_PKG_BUILD := "${PKG}/server"
 CLIENT_PKG_BUILD := "${PKG}/client"
 # PKG_LIST := $(shell go list ${PKG}/... | grep -v /vendor/)
 
+## RUN "make api" command to build and generate client.
 .PHONY: all api server client
 
 all: server client
