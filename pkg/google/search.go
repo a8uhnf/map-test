@@ -15,9 +15,13 @@ import (
 
 func init() {
 	fmt.Println("Hello google.com")
+
+	
 }
 
-type SearchPlaces struct{}
+type SearchPlaces struct{
+	Config config.MapConfig
+}
 
 func (s SearchPlaces) Search(in *api.SearchPlacesRequest) (*api.SearchPlacesResponse, error) {
 	ret := searchPlaces(in)
