@@ -6,15 +6,13 @@ import (
 	"log"
 	"os"
 
+	"github.com/kr/pretty"
+
 	"github.com/a8uhnf/map-test/api"
 	"github.com/a8uhnf/map-test/config"
 	"golang.org/x/net/context"
 	"googlemaps.github.io/maps"
 )
-
-func init() {
-	fmt.Println("Hello google.com")
-}
 
 type SearchPlaces struct {
 	Config config.MapConfig
@@ -61,13 +59,8 @@ func (s SearchPlaces) searchPlaces(in *api.SearchPlacesRequest) *api.SearchPlace
 		MinPrice: maps.PriceLevel(in.MinPrice),
 		Type:     maps.PlaceType(in.PlaceType),
 	}
-
-	if in.Location != nil {
-		r.Location = &maps.LatLng{
-			Lat: in.Location.Lat,
-			Lng: in.Location.Lng,
-		}
-	}
+	pretty.Println(r)
+	parseLocation(in.Location, r)
 
 	resp, err := client.TextSearch(context.Background(), r)
 	if err != nil {

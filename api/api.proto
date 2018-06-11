@@ -6,7 +6,7 @@ import "google/api/annotations.proto";
 
 message SearchPlacesRequest {
     string query = 1;
-    LatLng location = 2;
+    string location = 2;
     uint32 radius = 3;
     string language = 4;
     string minPrice = 5;

@@ -1,10 +1,9 @@
 # map-test
 
-### Build api
+### Architecture
 
-```
-make api
-```
+ - I use `golang`, `grpc`, `google-maps api` in this project. Supported fields are list below in `Supported Query Parameters` section.
+ - URL is http://localhost:7778/<vendor>?parameters
 
 ### Config
 
@@ -12,16 +11,37 @@ make api
 
 Follow the [link](https://developers.google.com/places/web-service/get-api-key) to generate your own `api-key`.
 
-### Api Assumption
-
-I assume api-key, location(latitude, longitude), radius fields must be provide for search
-
-### Usage
+## Usage
 
 Run the project by following command
 ```
 go run main.go
 ```
 
-Now, server is up and running in http://localhost:7778.
-If you hit, http://localhost:7778/api/google?query=hello&localtion.lat=23&location.lng=90&radius=10, you can see the search results.
+Now, server is up and running in `http://localhost:7778`.
+If you hit, `http://localhost:7778/api/google?query=123+main+street` you can see the search results.
+
+## Supported Query Parameters
+
+Supported parameters are listed below.
+
+`query`: `string which google places against this string`
+
+`location`: `this is combination of latitude and longitude. separated with comma.`
+
+`radius`: `radius is requied if location is provided.`
+
+`language`: `The language code`
+
+`minPrice`: `minimum price`
+
+`maxPrice`: `maximum price`
+
+`openNow`: `indicate whether open/close restaurants needs to enlist.`
+
+`placeType`: `indicate place type`
+
+`pageToken`: `page token`
+
+`vendor`: `vendor name. current only supported vendor is "google". In future, "Yelp and/or Foursquare" will be supported`
+```
